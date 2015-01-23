@@ -1,7 +1,7 @@
-ABOUT:
+About:
 	To Do List that organizes items into three lists (now, soon, eventually)
 	
-COMPATABILITY:
+Compatability:
 	Available for Windows and Mac. Only available for Mac OS 10.8 or higher.
 
 main.py and helper_methods.py are source code, rest is executable version. 
