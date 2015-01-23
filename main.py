@@ -1,16 +1,16 @@
+#To Do List that organizes items into now, soon and eventually lists
 
+#Import
 try: 
 	from Tkinter import *
 except:
 	from tkinter import *
 from datetime import datetime
 import helper_methods
-
 from datetime import datetime
 import helper_methods
 
 #global variables
-
 to_do_list= []
 now_items= []
 soon_items= []
@@ -21,6 +21,7 @@ class GUI:
 	def __init__(self, root):
 		#Home Screen
 
+		#Frames
 		frame= Frame(root)
 		frame.pack()
 
@@ -36,14 +37,12 @@ class GUI:
 		frame_five= Frame(root)
 		frame_five.pack()
 
-		self.seperator_one= Label(frame)
-		self.seperator_one.pack()
 
 		self.title= Label (frame, text= "To Do List", width= 15, height=1, font= ("Helvetica", 52))
 		self.title.pack()
 
 
-
+		#Add Entry
 		self.add_entry_button= Button(frame, text= "Add Entry", height= 1, font= ("TkDefaultFont", 12), command= lambda: self.make_entry_name(frame,to_do_list))
 		self.add_entry_button.config(height= 1, width= 9)
 		self.add_entry_button.pack()
@@ -52,10 +51,11 @@ class GUI:
 		self.seperator_two.pack()
 
 
-		self.now_title= Label (frame, text= "Now", font=("Helvetica", 34))
+		#Now List
+		self.now_title= Label (frame, text= "Now", font=("Helvetica", 32))
 		self.now_title.pack()
 		self.scrollbar = Scrollbar(frame_two, orient=VERTICAL)
-		self.now_list= Listbox(frame_two, height= 9, width= 42, font= ("Courier"), yscrollcommand=self.scrollbar.set)
+		self.now_list= Listbox(frame_two, height= 8, width= 42, font= ("Courier"), yscrollcommand=self.scrollbar.set)
 		self.scrollbar.config(command=self.now_list.yview)
 		self.scrollbar.pack(side=RIGHT, fill=Y)
 		self.now_list.pack(fill=BOTH, expand=1)
@@ -64,14 +64,13 @@ class GUI:
 		self.delete_now= Button(frame_three, text= "Clear Item", font= ("TkDefaultFont", 12), command= lambda now_list=self.now_list: self.delete_item_now(frame, now_list, to_do_list))
 		self.delete_now.config(height= 2, width= 8)
 		self.delete_now.pack()
+		
 
-		self.seperator_three= Label(frame_three)
-		self.seperator_three.pack()
-
-		self.soon_title= Label (frame_three, text= "Soon", font=("Helvetica", 34))
+		#Soon List
+		self.soon_title= Label (frame_three, text= "Soon", font=("Helvetica", 32))
 		self.soon_title.pack()
 		self.scrollbar_two = Scrollbar(frame_three, orient=VERTICAL)
-		self.soon_list= Listbox(frame_three, height= 9, width=42, font= ("Courier"), yscrollcommand=self.scrollbar_two.set)
+		self.soon_list= Listbox(frame_three, height= 8, width=42, font= ("Courier"), yscrollcommand=self.scrollbar_two.set)
 		self.scrollbar_two.config(command=self.soon_list.yview)
 		self.scrollbar_two.pack(side=RIGHT, fill=Y)
 		self.soon_list.pack(fill=BOTH, expand=1)
@@ -80,14 +79,13 @@ class GUI:
 		self.delete_soon= Button(frame_four, text= "Clear Item", font= ("TkDefaultFont", 12), command= lambda soon_list=self.soon_list: self.delete_item_soon(frame, soon_list, to_do_list))
 		self.delete_soon.config(height= 2, width= 8)
 		self.delete_soon.pack()
+		
 
-		self.seperator_four= Label(frame_four)
-		self.seperator_four.pack()
-
-		self.eventually_title= Label (frame_four, text= "Eventually", font=("Helvetica", 34))
+		#Eventually List	
+		self.eventually_title= Label (frame_four, text= "Eventually", font=("Helvetica", 32))
 		self.eventually_title.pack()
 		self.scrollbar_three = Scrollbar(frame_four, orient=VERTICAL)
-		self.eventually_list= Listbox(frame_four, height= 9, width=42, font= ("Courier"), yscrollcommand=self.scrollbar_three.set)
+		self.eventually_list= Listbox(frame_four, height= 8, width=42, font= ("Courier"), yscrollcommand=self.scrollbar_three.set)
 		self.scrollbar_three.config(command=self.eventually_list.yview)
 		self.scrollbar_three.pack(side=RIGHT, fill=Y)
 		self.eventually_list.pack(fill=BOTH, expand=1)
@@ -97,7 +95,7 @@ class GUI:
 		self.delete_eventually.config(height= 2, width= 8)
 		self.delete_eventually.pack()
 
-		#trys to load existing to_do_list
+		#Loads an existing to_do_list if user_data.txt exists
 		to_do_list= helper_methods.unsave_to_do()
 
 		try:
@@ -108,33 +106,47 @@ class GUI:
 	
 
 	def delete_item_now(self, frame, list_delete, to_do_list):
-		a= int(list_delete.curselection()[0])
-		b= self.now_items[a]
-		to_do_list.remove(b)
-		list_delete.delete(ANCHOR)
-		helper_methods.save_to_do(to_do_list)
-		self.display_to_do_list(frame, to_do_list)
+		
+		try:
+			#Delete button for now_list
+			a= int(list_delete.curselection()[0])
+			b= self.now_items[a]
+			to_do_list.remove(b)
+			list_delete.delete(ANCHOR)
+			helper_methods.save_to_do(to_do_list)
+			self.display_to_do_list(frame, to_do_list)
+		except:
+			pass
 
 
 	def delete_item_soon(self, frame, list_delete, to_do_list):
-		a= int(list_delete.curselection()[0])
-		b= self.soon_items[a]
-		to_do_list.remove(b)
-		list_delete.delete(ANCHOR)
-		helper_methods.save_to_do(to_do_list)
-		self.display_to_do_list(frame, to_do_list)
+		try:
+			#Delete button for soon_list
+			a= int(list_delete.curselection()[0])
+			b= self.soon_items[a]
+			to_do_list.remove(b)
+			list_delete.delete(ANCHOR)
+			helper_methods.save_to_do(to_do_list)
+			self.display_to_do_list(frame, to_do_list)
+		except:
+			pass
 
 	def delete_item_eventually(self, frame, list_delete, to_do_list):
-		a= int(list_delete.curselection()[0])
-		b= self.eventually_items[a]
-		to_do_list.remove(b)
-		list_delete.delete(ANCHOR)
-		helper_methods.save_to_do(to_do_list)
-		self.display_to_do_list(frame, to_do_list)
+		#Delete button for eventually_list
+		try:
+			a= int(list_delete.curselection()[0])
+			b= self.eventually_items[a]
+			to_do_list.remove(b)
+			list_delete.delete(ANCHOR)
+			helper_methods.save_to_do(to_do_list)
+			self.display_to_do_list(frame, to_do_list)
+		except:
+			pass
 
 
 
 	def make_entry_name (self, frame,to_do_list):
+		#method for make entry button
 
 		self.add_entry_button.pack_forget()
 
@@ -142,13 +154,11 @@ class GUI:
 		self.now_list.pack_forget()
 		self.scrollbar.pack_forget()
 		self.delete_now.pack_forget()
-		self.seperator_three.pack_forget()
 
 		self.soon_title.pack_forget()
 		self.soon_list.pack_forget()
 		self.scrollbar_two.pack_forget()
 		self.delete_soon.pack_forget()
-		self.seperator_four.pack_forget()
 
 		self.eventually_title.pack_forget()
 		self.eventually_list.pack_forget()
@@ -167,6 +177,7 @@ class GUI:
 		self.name_entry_add_button.pack()
 
 	def make_entry_date (self, frame, to_do_list): 
+		#method for when due date is entered
 
 		#checks if valid name
 		name= self.entry_text_box_name.get()
@@ -208,6 +219,7 @@ class GUI:
 			self.entry_add_button_one.pack()
 
 	def make_entry_days_needed (self, frame, name, to_do_list): 
+		#method for when days_needed is entered
 
 		#first checks if the date received is valid
 		due_date= self.entry_text_box_one.get()
@@ -269,8 +281,7 @@ class GUI:
 			except:
 				pass
 
-			#makes new entry box
-
+			#makes days_needed entry box
 			self.due_date_title.pack_forget()
 			self.tomorrow_button.pack_forget()
 			self.or_title.pack_forget()
@@ -288,6 +299,7 @@ class GUI:
 			self.entry_add_button_two.pack()
 
 	def add_tomorrow_item (self, frame, name, to_do_list):
+		#For when tomorrow button is pressed
 		current_date= datetime.now()
 		month= int (current_date.month)
 		day= int (current_date.day)+1
@@ -327,15 +339,13 @@ class GUI:
 		self.now_list.pack(fill=BOTH, expand=1)
 		self.now_list.pack()
 		self.delete_now.pack()
-		self.seperator_three.pack()
 
 		self.soon_title.pack()
 		self.scrollbar_two.pack(side=RIGHT, fill=Y)
 		self.soon_list.pack(fill=BOTH, expand=1)
 		self.soon_list.pack()
 		self.delete_soon.pack()
-		self.seperator_four.pack()
-
+	
 		self.eventually_title.pack()
 		self.scrollbar_three.pack(side=RIGHT, fill=Y)
 		self.eventually_list.pack(fill=BOTH, expand=1)
@@ -352,6 +362,7 @@ class GUI:
 		
 
 	def entry_added(self, frame, name, due_date, to_do_list): 
+		#When entire entry is added but 
 
 		#checks if days_needed entry is valid
 		days_needed= self.entry_text_box_two.get()
@@ -393,14 +404,14 @@ class GUI:
 			self.now_list.pack(fill=BOTH, expand=1)
 			self.now_list.pack()
 			self.delete_now.pack()
-			self.seperator_three.pack()
+
 
 			self.soon_title.pack()
 			self.scrollbar_two.pack(side=RIGHT, fill=Y)
 			self.soon_list.pack(fill=BOTH, expand=1)
 			self.soon_list.pack()
 			self.delete_soon.pack()
-			self.seperator_four.pack()
+
 
 			self.eventually_title.pack()
 			self.scrollbar_three.pack(side=RIGHT, fill=Y)
@@ -500,10 +511,8 @@ class GUI:
 
 
 
-#variable declaration
+#Starts main loop
 root= Tk()
 GUI= GUI(root)
-root.geometry('400x830')
-
-#program loop
+root.geometry('400x725')
 root.mainloop()

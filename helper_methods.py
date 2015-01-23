@@ -1,10 +1,14 @@
+#helper methods for main.py
+
+#import
 from datetime import datetime
 import pickle as pickle 
 
 #global variable
 valid_ints= [0,1,2,3,4,5,6,7,8,9]  
 
-def calculate_days_remaining (due_date):  
+def calculate_days_remaining (due_date): 
+    #Calculates days between current date and due_date
     difference= 0
     index= []
 
@@ -82,6 +86,7 @@ def calculate_days_remaining (due_date):
 
 
 def find_difference_month(day, current_day, month, current_month, difference):
+    #helper method for calculate_days_remaining, adds days until due_date month
     days_in_each_month= [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     days_left= days_in_each_month[current_month]-current_day
     difference+= days_left
@@ -92,6 +97,7 @@ def find_difference_month(day, current_day, month, current_month, difference):
     return difference
 
 def end_the_year (current_day, current_month, current_year, difference):
+    #helper method for calculate_days_remaining, ends the current year and adds amount to difference
     days_in_each_month= [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     days_left= days_in_each_month[current_month]-current_day
     difference += days_left
@@ -103,8 +109,7 @@ def end_the_year (current_day, current_month, current_year, difference):
 
 
 def check_date_valid(due_date):
-    "returns True or False and days_remaining, returns string 'earlier date' if date is earlier than existing"
-
+    #Checks to see if user entered date is valid
     index= []
     if len(due_date)>10 or len(due_date)<8:
         return False
@@ -147,6 +152,7 @@ def check_date_valid(due_date):
     return True
 
 def check_days_needed_valid (days_needed):
+     #Checks to see if user entered days_needed is valid
     for i in range (0, len(days_needed)):
         try: 
             int (days_needed[i])
@@ -163,6 +169,7 @@ def check_days_needed_valid (days_needed):
 
 
 def check_name_valid (name):
+     #Checks to see if user entered item_name is valid
     if len (name)==0:
         return False
 
@@ -178,6 +185,7 @@ def check_name_valid (name):
 
 
 def append_days_left(to_do_list):
+     #appends days left to to_do_list item as 3rd index
     for i in range (0, len(to_do_list)):
         a= calculate_days_remaining(to_do_list[i][1])
         try: 
@@ -187,6 +195,7 @@ def append_days_left(to_do_list):
     return to_do_list
 
 def organize_list (to_do_list):
+    #organizes to_do list into now, soon, and eventually  lists
     organized_list= []
     now= []
     soon= []
@@ -226,7 +235,9 @@ def organize_list (to_do_list):
     return organized_list
 
 def formatting_display (name, days_till_due):
+    #formats the item for proper display. 
     #formatting= [spaces_needed, days_till_due]
+
     a= len(name)
     b= int(34-a)
     less_than_ten= int(b-1)
@@ -250,9 +261,11 @@ def formatting_display (name, days_till_due):
 
 
 def save_to_do(to_do_list): 
+    #saves to_do_list
     pickle.dump(to_do_list, open("user_data.txt", "wb"))
 
 def unsave_to_do():
+    #loads to_do_list
     try: 
         return pickle.load(open("user_data.txt", "rb"))
     except:
