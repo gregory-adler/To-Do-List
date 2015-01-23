@@ -4,7 +4,8 @@ About:
 Compatability:
 	Available for Windows and Mac. Only available for Mac OS 10.8 or higher.
 
-main.py and helper_methods.py are source code, rest is executable version. 
+Code:
+	main.py and helper_methods.py are source code, rest is executable version. 
 
 Developed by Gregory Adler
 
